@@ -53,7 +53,7 @@ func Build(logger logging.Logger, cfg config.Config, packClient PackClient) *cob
 			"but you can use `--path` to specify another source code directory. Build requires a `builder`, which can either " +
 			"be provided directly to build using `--builder`, or can be set using the `set-default-builder` command. For more " +
 			"on how to use `pack build`, see: https://buildpacks.io/docs/app-developer-guide/build-an-app/.",
-		RunE: logError(logger, func(cmd *cobra.Command, args []string) error {
+		RunE: LogError(logger, func(cmd *cobra.Command, args []string) error {
 			if err := validateBuildFlags(&flags, cfg, packClient, logger); err != nil {
 				return err
 			}
@@ -97,7 +97,7 @@ func Build(logger logging.Logger, cfg config.Config, packClient PackClient) *cob
 				}
 			}
 
-			trustBuilder := isTrustedBuilder(cfg, flags.Builder) || flags.TrustBuilder
+			trustBuilder := IsTrustedBuilder(cfg, flags.Builder) || flags.TrustBuilder
 			if trustBuilder {
 				logger.Debugf("Builder %s is trusted", style.Symbol(flags.Builder))
 			} else {

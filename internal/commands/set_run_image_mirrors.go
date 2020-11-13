@@ -18,7 +18,7 @@ func SetRunImagesMirrors(logger logging.Logger, cfg config.Config) *cobra.Comman
 		Args:    cobra.ExactArgs(1),
 		Short:   "Set mirrors to other repositories for a given run image",
 		Example: "pack set-run-image-mirrors cnbs/sample-stack-run:bionic --mirror index.docker.io/cnbs/sample-stack-run:bionic",
-		RunE: logError(logger, func(cmd *cobra.Command, args []string) error {
+		RunE: LogError(logger, func(cmd *cobra.Command, args []string) error {
 			runImage := args[0]
 			cfg = config.SetRunImageMirrors(cfg, runImage, mirrors)
 			configPath, err := config.DefaultConfigPath()

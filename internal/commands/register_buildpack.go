@@ -23,7 +23,7 @@ func RegisterBuildpack(logger logging.Logger, cfg config.Config, client PackClie
 		Args:    cobra.ExactArgs(1),
 		Short:   prependExperimental("Register the buildpack to a registry"),
 		Example: "pack register-buildpack my-buildpack",
-		RunE: logError(logger, func(cmd *cobra.Command, args []string) error {
+		RunE: LogError(logger, func(cmd *cobra.Command, args []string) error {
 			registry, err := config.GetRegistry(cfg, flags.BuildpackRegistry)
 			if err != nil {
 				return err

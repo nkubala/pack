@@ -46,7 +46,7 @@ func CreateCancellableContext() context.Context {
 	return ctx
 }
 
-func logError(logger logging.Logger, f func(cmd *cobra.Command, args []string) error) func(*cobra.Command, []string) error {
+func LogError(logger logging.Logger, f func(cmd *cobra.Command, args []string) error) func(*cobra.Command, []string) error {
 	return func(cmd *cobra.Command, args []string) error {
 		cmd.SilenceErrors = true
 		cmd.SilenceUsage = true
@@ -89,12 +89,16 @@ func getMirrors(config config.Config) map[string][]string {
 	return mirrors
 }
 
-func isTrustedBuilder(cfg config.Config, builder string) bool {
+func IsTrustedBuilder(cfg config.Config, builder string) bool {
 	for _, trustedBuilder := range cfg.TrustedBuilders {
 		if builder == trustedBuilder.Name {
 			return true
 		}
 	}
 
-	return isSuggestedBuilder(builder)
+	return IsSuggestedBuilder(builder)
+}
+
+func DeprecationWarning(logger logging.Logger, oldCmd, replacementCmd string) {
+	logger.Warnf("Command %s has been deprecated, please use %s instead", style.Symbol("pack "+oldCmd), style.Symbol("pack "+replacementCmd))
 }
