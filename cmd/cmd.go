@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	cmdConfig "github.com/buildpacks/pack/internal/commands/config"
 	"github.com/heroku/color"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+
+	cmdConfig "github.com/buildpacks/pack/internal/commands/config"
 
 	"github.com/buildpacks/pack"
 	"github.com/buildpacks/pack/buildpackage"
@@ -74,13 +75,17 @@ func NewPackCommand(logger ConfigurableLogger) (*cobra.Command, error) {
 	rootCmd.AddCommand(commands.SetDefaultBuilder(logger, cfg, &packClient))
 	rootCmd.AddCommand(commands.InspectBuilder(logger, cfg, &packClient, writer.NewFactory()))
 	rootCmd.AddCommand(commands.SuggestBuilders(logger, &packClient))
+	//nolint:staticcheck
 	rootCmd.AddCommand(cmdConfig.TrustBuilder(logger, cfg))
+	//nolint:staticcheck
 	rootCmd.AddCommand(cmdConfig.UntrustBuilder(logger, cfg))
+	//nolint:staticcheck
 	rootCmd.AddCommand(cmdConfig.ListTrustedBuilders(logger, cfg))
 	rootCmd.AddCommand(commands.CreateBuilder(logger, cfg, &packClient))
 
 	rootCmd.AddCommand(commands.PackageBuildpack(logger, cfg, &packClient, buildpackage.NewConfigReader()))
 
+	//nolint:staticcheck
 	rootCmd.AddCommand(stack.SuggestStacks(logger))
 
 	rootCmd.AddCommand(commands.Version(logger, pack.Version))
@@ -97,6 +102,7 @@ func NewPackCommand(logger ConfigurableLogger) (*cobra.Command, error) {
 
 	rootCmd.AddCommand(commands.CompletionCommand(logger))
 
+	rootCmd.AddCommand(cmdConfig.Config(logger, cfg, cfgPath))
 	rootCmd.AddCommand(stack.Stack(logger))
 
 	rootCmd.Version = pack.Version
